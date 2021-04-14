@@ -12,14 +12,13 @@ TVout TV;
 static char image_data[22*((22+7)/8)];
 static char temp_data[22*((22+7)/8)];
 static char eyelid1_data[buffer_size];
+unsigned long previousMillis = 0;  
+const long interval = 1000;
 
 extern const unsigned char white_pixel[];
 
 extern const unsigned char black_pixel[];
 
-unsigned long previousMillis = 0;   
-
-const long interval = 1000;  
 
 byte card_x, card_y;
 
@@ -305,6 +304,12 @@ void loop() {
 
   // simple loop to draw the eye in various states as a demo
   while(1){
+
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= interval) {
+    // save the last time you blinked the LED
+    previousMillis = currentMillis;
+
    int hor_value = analogRead(A0);
    int vert_value = analogRead(A1);
    int light_value = analogRead(A2);
@@ -327,7 +332,21 @@ void loop() {
         percent_open = 100.f;
         draw_eye(image, temp, horiz, vert, pupil_size, blink_state);
        //Serial.println(buttonState);
-        
+        }
+
+  else{
+    while(1){
+
+      TV.clear_screen();
+      TV.bitmap(card_x, card_y, esc);
+      TV.delay(3000);
+      TV.clear_screen(); 
+
+    }
+
+  }
+
+
       }
     }
 
