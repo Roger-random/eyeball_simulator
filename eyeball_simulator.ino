@@ -220,17 +220,19 @@ void loop() {
 
   // simple loop to draw the eye in various states as a demo
   while(1){
-    for (int i=-4; i<=4; i++){
-      for (int j=-4; j<=4; j++){
-        horiz = i;
-        vert = j;
-        pupil_size = abs(5-i)/2;
+   
+   int hor_value = analogRead(A0);
+   int vert_value = analogRead(A1);
+   int hor_position = map(hor_value,0,1023,-4,4);
+   int vert_position = map(vert_value,0,1023,-4,4);
+        horiz = hor_position;
+        vert = vert_position;
+        pupil_size = abs(5-hor_position)/2;
         percent_open = 75.f;
         draw_eye(image, temp, horiz, vert, pupil_size, percent_open);
       }
     }
-  }
-}
+
 
 PROGMEM const unsigned char white_pixel[] = {
   4,4
